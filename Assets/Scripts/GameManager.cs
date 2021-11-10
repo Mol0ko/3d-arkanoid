@@ -7,6 +7,8 @@ namespace Arkanoid
     public class GameManager : MonoBehaviour
     {
         [SerializeField]
+        private GameObject _pauseView;
+        [SerializeField]
         private GameObject[] _blocks;
         [SerializeField]
         private Rigidbody _ball;
@@ -16,6 +18,8 @@ namespace Arkanoid
         private Rigidbody _playerTwo;
         private Vector2 _playerOneVelocity;
         private Vector2 _playerTwoVelocity;
+
+        private bool _paused = false;
 
         private void FixedUpdate()
         {
@@ -43,6 +47,13 @@ namespace Arkanoid
         {
             if (_blocks.Where(block => block.activeInHierarchy).Count() <= 0)
                 Debug.LogWarning("WIN!");
+        }
+
+        public void OnPause()
+        {
+            _paused = !_paused;
+            _pauseView.SetActive(_paused);
+            Time.timeScale = _paused ? 0 : 1;
         }
 
         public void OnMovePlayer1(InputAction.CallbackContext value)

@@ -5,12 +5,8 @@ using UnityEngine.UI;
 
 public class MenuView : MonoBehaviour
 {
-    #region SerializeField
-
     [SerializeField]
     private Text _versionText;
-
-    #endregion
 
     #region Lifecycle
 

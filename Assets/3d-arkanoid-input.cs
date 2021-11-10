@@ -46,6 +46,15 @@ namespace Arkanoid
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""7b533cd9-de62-4bb5-ae55-2dd85daaa5a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -158,6 +167,17 @@ namespace Arkanoid
                     ""action"": ""MovePlayer2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cfac44c1-6be2-4279-be17-40da00d8c49a"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -229,6 +249,7 @@ namespace Arkanoid
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_MovePlayer1 = m_Player.FindAction("MovePlayer1", throwIfNotFound: true);
             m_Player_MovePlayer2 = m_Player.FindAction("MovePlayer2", throwIfNotFound: true);
+            m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -290,12 +311,14 @@ namespace Arkanoid
         private IPlayerActions m_PlayerActionsCallbackInterface;
         private readonly InputAction m_Player_MovePlayer1;
         private readonly InputAction m_Player_MovePlayer2;
+        private readonly InputAction m_Player_Pause;
         public struct PlayerActions
         {
             private @ArkanoidInput m_Wrapper;
             public PlayerActions(@ArkanoidInput wrapper) { m_Wrapper = wrapper; }
             public InputAction @MovePlayer1 => m_Wrapper.m_Player_MovePlayer1;
             public InputAction @MovePlayer2 => m_Wrapper.m_Player_MovePlayer2;
+            public InputAction @Pause => m_Wrapper.m_Player_Pause;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -311,6 +334,9 @@ namespace Arkanoid
                     @MovePlayer2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer2;
                     @MovePlayer2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer2;
                     @MovePlayer2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovePlayer2;
+                    @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                    @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                    @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -321,6 +347,9 @@ namespace Arkanoid
                     @MovePlayer2.started += instance.OnMovePlayer2;
                     @MovePlayer2.performed += instance.OnMovePlayer2;
                     @MovePlayer2.canceled += instance.OnMovePlayer2;
+                    @Pause.started += instance.OnPause;
+                    @Pause.performed += instance.OnPause;
+                    @Pause.canceled += instance.OnPause;
                 }
             }
         }
@@ -374,6 +403,7 @@ namespace Arkanoid
         {
             void OnMovePlayer1(InputAction.CallbackContext context);
             void OnMovePlayer2(InputAction.CallbackContext context);
+            void OnPause(InputAction.CallbackContext context);
         }
     }
 }

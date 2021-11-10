@@ -16,6 +16,10 @@ namespace Arkanoid
         private Rigidbody _playerOne;
         [SerializeField]
         private Rigidbody _playerTwo;
+        [SerializeField]
+        private HpBar _playerOneHpBar;
+        [SerializeField]
+        private HpBar _playerTwoHpBar;
         private Vector2 _playerOneVelocity;
         private Vector2 _playerTwoVelocity;
 
@@ -39,8 +43,11 @@ namespace Arkanoid
 
         public void Loose()
         {
+            _playerOneHpBar.SetData(0);
+            _playerTwoHpBar.SetData(0);
             Debug.LogWarning("LOSE");
             _ball.velocity = Vector3.zero;
+            Pause();
         }
 
         public void CheckWin()
@@ -49,12 +56,14 @@ namespace Arkanoid
                 Debug.LogWarning("WIN!");
         }
 
-        public void OnPause()
+        public void Pause()
         {
             _paused = !_paused;
             _pauseView.SetActive(_paused);
             Time.timeScale = _paused ? 0 : 1;
         }
+
+        public void OnPause(InputAction.CallbackContext value) => Pause();
 
         public void OnMovePlayer1(InputAction.CallbackContext value)
         {

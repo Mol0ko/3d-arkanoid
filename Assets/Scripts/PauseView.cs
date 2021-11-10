@@ -13,7 +13,7 @@ namespace Arkanoid
 
         public void Resume()
         {
-            _gameManager.OnPause();
+            _gameManager.Pause();
         }
 
         public void NewGame()
